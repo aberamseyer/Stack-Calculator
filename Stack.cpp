@@ -7,23 +7,26 @@
  *
  */
 #include "Stack.h"
+#include "LinkedList.h"
 
-list<std::string
+LinkedList stack;
+
 Stack::Stack() {
-
+	s = stack;
 };
 
 void Stack::push(std::string &x) {
-	s.push_front(x);
+	s.add(x);
 };
 
 void Stack::pop() {
-	s.pop_front();
+	int a = stack.getSize() - 1;
+	std::string b = stack.at(a);
+	s.remove(b);
 };
 
 std::string& Stack::top() {
-	std::string h = "hello";
-	return &h;
+	return s.at(stack.getSize() - 1);
 };
 
 

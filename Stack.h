@@ -18,7 +18,7 @@ class Stack{
     std::string & top ();
     // add more functions as needed
   private:
-    list<Object> s;
+    LinkedList s;
 };
 
 #endif
