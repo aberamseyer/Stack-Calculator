@@ -7,7 +7,6 @@
  * 2-14-2017
  */
 
-#include <iostream>
 #include "LinkedList.h"
 
 /*
@@ -16,6 +15,7 @@
  */
 LinkedList::LinkedList() {
   this->head = NULL;
+  this->tail = NULL;
   size = 0;
 }
 
@@ -25,6 +25,7 @@ LinkedList::LinkedList() {
  */
 LinkedList::LinkedList(LinkedList& other) {
   head = NULL;
+  tail = NULL;
   size = 0;
   // int size = other.getSize();
   Node* curr = other.getHead();
@@ -104,7 +105,7 @@ int LinkedList::at(int index) const {
  * Adds a value to the end of the linked list
  * Constant time
  */
-void LinkedList::add(int toAdd) {
+void LinkedList::add(std::string toAdd) {
   if(head == NULL) {
     Node* newNode = new Node();
     newNode->data = toAdd;
@@ -127,7 +128,7 @@ void LinkedList::add(int toAdd) {
  * Deletes the node at the specified index from the list, returns true if valid index (successful)
  * Constant time for the head and tail, O(n-index) worst case for any index inbetween
  */
-bool LinkedList::remove(int index) {
+bool LinkedList::remove(std::string index) {
   Node* curr = head;
   if(index == 0) {
     curr->next->prev = NULL;  // disconnect next node's prev
@@ -159,28 +160,4 @@ bool LinkedList::remove(int index) {
 
   size--;
   return true;
-}
-
-/*
- * Prints out all the values in the list forward
- * O(n)
- */
-void LinkedList::printForward() const {
-  Node* curr = head;
-  for(int i=0; i < size; i++) {
-    std::cout << i << ": " << curr->data << std::endl;
-    curr = curr->next;
-  }
-}
-
-/*
- * Prints out all the values in the list backward
- * O(n)
- */
-void LinkedList::printBackward() const {
-  Node* curr = tail;
-  for(int i=size; i > 0; i--) {
-    std::cout << i-1 << ": " << curr->data << std::endl;
-    curr = curr->prev;
-  }
 }
