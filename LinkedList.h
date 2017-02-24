@@ -13,7 +13,7 @@ class LinkedList {
 
  private:
   struct Node {
-    int data;
+    std::string data;
     Node* next;
     Node* prev;
   };
@@ -30,8 +30,8 @@ public:
   LinkedList::Node* getHead() const;
   LinkedList::Node* getTail() const;
   int getSize() const;
-  int at(int index) const;
-  void add(int toAdd);
+  std::string at(int index) const;
+  void add(std::string& toAdd);
   bool remove(int index);
 	void printForward() const;
   void printBackward() const;

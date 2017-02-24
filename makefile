@@ -7,10 +7,13 @@ CC = g++
 
 all:main
 
-main: Stack.o Calculator.o
-	${CC} Stack.o main.o -o main
-Stack.o:
-	${CC} -c Stack.cpp
+main:  Calculator.o LinkedList.o #Stack.o
+	${CC} LinkedList.o Calculator.o -o main #add in Stack.o
+
+LinkedList.o:
+	${CC} -c LinkedList.cpp
+#Stack.o:
+#	${CC} -c Stack.cpp
 Calculator.o:
 	${CC} -c Calculator.cpp
 clean:

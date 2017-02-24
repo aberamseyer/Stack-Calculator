@@ -7,7 +7,6 @@
  * 2-14-2017
  */
 
-#include <iostream>
 #include "LinkedList.h"
 
 /*
@@ -78,9 +77,9 @@ int LinkedList::getSize() const {
  * -1 is returned for an invalid index
  * Worst case O(n/2)
  */
-int LinkedList::at(int index) const {
+std::string LinkedList::at(int index) const {
   if(index < 0 || index >= size) {
-    return -1;
+    return NULL;
   }
 
   Node* curr = NULL;
@@ -104,7 +103,7 @@ int LinkedList::at(int index) const {
  * Adds a value to the end of the linked list
  * Constant time
  */
-void LinkedList::add(int toAdd) {
+void LinkedList::add(std::string& toAdd) {
   if(head == NULL) {
     Node* newNode = new Node();
     newNode->data = toAdd;
