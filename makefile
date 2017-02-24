@@ -18,5 +18,4 @@ Calculator.o:
 	${CC} -c Calculator.cpp
 clean:
 	rm *.o
-run:
-	clean main
+run: clean main
