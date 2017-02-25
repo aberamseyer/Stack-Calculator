@@ -41,7 +41,7 @@ LinkedList::LinkedList(LinkedList& other) {
  */
 LinkedList::~LinkedList() {
   Node* curr = head;
-  while(head->next != NULL) {
+  while(head != NULL) {
     head = head->next;
     delete curr;
     curr = head;
@@ -128,7 +128,7 @@ void LinkedList::add(std::string& toAdd) {
  * Deletes the node at the specified index from the list, returns true if valid index (successful)
  * Constant time for the head and tail, O(n-index) worst case for any index inbetween
  */
-bool LinkedList::remove(std::string index) {
+bool LinkedList::remove(int index) {
   Node* curr = head;
   if(index == 0) {
     curr->next->prev = NULL;  // disconnect next node's prev

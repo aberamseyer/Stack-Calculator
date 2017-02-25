@@ -8,17 +8,18 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include <list>
+#include "LinkedList.h"
 
 class Stack{
   public:
     Stack ();
     void push (std::string & x);
     void pop ();
-    std::string & top ();
+    std::string top ();
+    void clear ();
     // add more functions as needed
   private:
-    LinkedList s;
+    LinkedList stack;
 };
 
 #endif

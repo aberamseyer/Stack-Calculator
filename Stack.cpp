@@ -9,24 +9,24 @@
 #include "Stack.h"
 #include "LinkedList.h"
 
-LinkedList stack;
+// LinkedList stack;
 
 Stack::Stack() {
-	s = stack;
-};
+}
 
 void Stack::push(std::string &x) {
-	s.add(x);
-};
+	stack.add(x);
+}
 
 void Stack::pop() {
 	int a = stack.getSize() - 1;
-	std::string b = stack.at(a);
-	s.remove(b);
-};
+	stack.remove(a);
+}
 
-std::string& Stack::top() {
-	return s.at(stack.getSize() - 1);
-};
+std::string Stack::top() {
+	return stack.at(stack.getSize() - 1);
+}
 
+void Stack::clear() {
 
+}

@@ -8,17 +8,17 @@
  */
 #include "Stack.h"
 
+bool interpret(std::string& toCheck, Stack& totalStack, Stack& undoStack, bool repeat);
+void encode(std::string& toCheck, Stack& totalStack);
+void redo(Stack& totalStack, Stack& undoStack);
+void undo(Stack& totalStack, Stack& undoStack);
+
 int main() {
-  void interpret(std::string& toCheck, Stack& totalStack, Stack& undoStack);
-  void encode(std::string& toCheck, Stack& totalStack);
-  void redo(Stack& undoStack, Stack& redoStack);
-  void undo(Stack& undoStack, Stack& redoStack);
 
-
-  Stack totalStack;
   Stack undoStack;
+  Stack totalStack;
 
-  bool repeat true;
+  bool repeat = true;
   std::string entry;
   std::cout << "Welcome to this stack-based integer calculator. It works on a running total.\n\n" <<
                 "Usage                   Function\n" <<
@@ -30,21 +30,21 @@ int main() {
   do {
     std::cout << ">";
     std::cin >> entry;
-    interpret(entry);
-  } while(repeat)
+    repeat = interpret(entry, totalStack, undoStack, repeat);
+  } while(repeat);
 
 
   return 0;
 }
 
-void interpret(std::string& toCheck, Stack& totalStack, Stack& undoStack) {
+bool interpret(std::string& toCheck, Stack& totalStack, Stack& undoStack, bool repeat) {
   switch (toCheck[0]) {
     case '+':
     case '-':
     case '*':
     case '/':
     case '%':
-      encode(toCheck);
+      encode(toCheck, totalStack);
       break;
     case 'R':
     case 'r':
@@ -64,6 +64,7 @@ void interpret(std::string& toCheck, Stack& totalStack, Stack& undoStack) {
       repeat = false;
       break;
   }
+  return repeat;
 }
 
 void encode(std::string& toCheck, Stack& totalStack) {
@@ -91,6 +92,6 @@ void redo(Stack& undoStack, Stack& redoStack) {
   undoStack.pop(); //TODO make this work
 }
 
-void undo(Stack& undoStack, Stack& redoStack) {
+void undo(Stack& totalStack, Stack& undoStack) {
   totalStack.pop(); //TODO make this work
 }
