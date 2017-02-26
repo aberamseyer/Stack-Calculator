@@ -4,18 +4,19 @@
 #
 
 CC = g++
+FLAGS = -std=c++11
 
 all:main
 
 main:  Calculator.o LinkedList.o Stack.o
-	${CC} LinkedList.o Stack.o Calculator.o -o main #add in
+	${CC} ${FLAGS} LinkedList.o Stack.o Calculator.o -o main
 
 LinkedList.o:
-	${CC} -c LinkedList.cpp
+	${CC} ${FLAGS} -c LinkedList.cpp
 Stack.o:
-	${CC} -c Stack.cpp
+	${CC} ${FLAGS} -c Stack.cpp
 Calculator.o:
-	${CC} -c Calculator.cpp
+	${CC} ${FLAGS} -c Calculator.cpp
 clean:
 	rm *.o
 run: clean main
