@@ -17,6 +17,7 @@ class Stack{
     void pop ();
     std::string top ();
     void clear ();
+    bool empty ();
     // add more functions as needed
   private:
     LinkedList stack;

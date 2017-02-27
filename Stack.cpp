@@ -28,5 +28,13 @@ std::string Stack::top() {
 }
 
 void Stack::clear() {
+	for(int i=stack.getSize()-1; i >= 0; i--) {
+		stack.remove(i);
+	}
+}
 
+bool Stack::empty() {
+	if(stack.getSize() == 0)
+		return true;
+	return false;
 }

@@ -130,12 +130,23 @@ void LinkedList::add(std::string& toAdd) {
  */
 bool LinkedList::remove(int index) {
   Node* curr = head;
-  if(index == 0) {
-    curr->next->prev = NULL;  // disconnect next node's prev
-    head = curr->next;        // move head up one
-    curr->next = NULL;        // disconnect head from next node
-    delete curr;
-    curr = NULL;      // remove dangling pointer
+  if(index < 0 || index >= size) {
+    return false; // index out of range
+  }
+  else if(index == 0) {
+    if(size != 1) {
+      curr->next->prev = NULL;  // disconnect next node's prev
+      head = curr->next;        // move head up one
+      curr->next = NULL;        // disconnect head from next node
+      delete curr;
+      curr = NULL;      // remove dangling pointer
+    }
+    else {
+      head = NULL;
+      tail = NULL;
+      delete curr;
+      curr = NULL;
+    }
   }
   else if(index == size-1) {
     curr = tail;     // change curr to tail
@@ -144,9 +155,6 @@ bool LinkedList::remove(int index) {
     curr->prev = NULL;        // isolate last Node
     delete curr;
     curr = NULL; // remove dangling pointer
-  }
-  else if(index < 0 || index >= size) {
-    return false; // index out of range
   }
   else {
     for(int i=0; i < index; i++) {

@@ -3,24 +3,25 @@
  * Simulation for the Stack implemenation as a calculator.
  * Main Driver file for the program.
  *
- * @author
+ * @author Abe Ramseyer
  *
  */
 #include "Stack.h"
 #include <string>
 #include <regex>
 
-bool interpret(std::string& toCheck, Stack& totalStack, Stack& undoStack, int runningTotal, bool repeat);
-void calculate(int runningTotal, std::string& toCheck);
-void redo(Stack& totalStack, Stack& undoStack);
-void undo(Stack& totalStack, Stack& undoStack);
+void interpret(std::string& toCheck);
+void calculate(std::string& toCheck);
+void redo();
+void undo();
+
+Stack undoStack;
+Stack totalStack;
+int runningTotal = 0;
+bool repeat = true;
+std::string ZERO = "0";
 
 int main() {
-
-  Stack undoStack;
-  Stack totalStack;
-  int runningTotal = 0;
-  bool repeat = true;
   std::string entry;
   std::regex number("[[:digit:]]+");
   std::regex command("[QURCqurc]");
@@ -31,14 +32,14 @@ int main() {
                 "C                       Clears the total\n" <<
                 "U                       Undo\n" <<
                 "R                       Redo\n" <<
-                "Q                       Quit" << std::endl;
+                "Q                       Quit" << std::endl << std::endl << "0" << std::endl;
   do {
     std::cout << ">";
     std::cin >> entry;
     if(!(std::regex_match(entry.substr(1), number) || std::regex_match(entry, command))) {  // determine number or command
       std::cout << "Invalid Input" << std::endl;
     } else {
-      repeat = interpret(entry, totalStack, undoStack, runningTotal, repeat);
+      interpret(entry);
     }
     std::cout << runningTotal << std::endl;
   } while(repeat);
@@ -46,27 +47,32 @@ int main() {
   return 0;
 }
 
-bool interpret(std::string& toCheck, Stack& totalStack, Stack& undoStack, int runningTotal, bool repeat) {
+void interpret(std::string& toCheck) {
+  std::string toSend;
   switch (toCheck[0]) {
     case '+':
     case '-':
     case '*':
     case '/':
     case '%':
-      calculate(runningTotal, toCheck);
-      undoStack.push(toCheck);
+      toSend = std::to_string(runningTotal);
+      calculate(toCheck);   // calculates the runningTotal with the new number
+      totalStack.push(toSend);  // push the current runningTotal onto the stack
+      undoStack.clear();        // nothing to redo if a calculation goes through
       break;
     case 'R':
     case 'r':
-      redo(totalStack, undoStack);
+      redo();
       break;
     case 'U':
     case 'u':
-      undo(totalStack, undoStack);
+      undo();
       break;
     case 'C':
     case 'c':
-      totalStack.clear();
+      toSend = std::to_string(runningTotal);
+      totalStack.push(toSend);
+      runningTotal = 0; // zero
       undoStack.clear();
       break;
     case 'Q':
@@ -77,26 +83,42 @@ bool interpret(std::string& toCheck, Stack& totalStack, Stack& undoStack, int ru
       std::cout << "Invalid Input" << std::endl;
   }
 
-  return repeat;
 }
 
-void calculate(int runningTotal, std::string& toCheck) {
+void calculate(std::string& toCheck) {
+  int number = std::stoi(toCheck.substr(1));
   if(toCheck[0] == '+')
-    runningTotal += std::stoi(toCheck.substr(1));
+    runningTotal += number;
   else if(toCheck[0] == '-')
-    runningTotal -= std::stoi(toCheck.substr(1));
+    runningTotal -= number;
   else if(toCheck[0] == '*')
-    runningTotal *= std::stoi(toCheck.substr(1));
+    runningTotal *= number;
   else if(toCheck[0] == '/')
-    runningTotal /= std::stoi(toCheck.substr(1));
+    runningTotal /= number;
   else if(toCheck[0] == '%')
-    runningTotal %= std::stoi(toCheck.substr(1));
+    runningTotal %= number;
 }
 
-void redo(Stack& undoStack, Stack& redoStack) {
-  undoStack.pop(); //TODO make this work
+void redo() {
+  if(!undoStack.empty()) {
+    std::string totalAsString = std::to_string(runningTotal);
+    totalStack.push(totalAsString);
+    runningTotal = std::stoi(undoStack.top());
+    undoStack.pop();
+  }
+  else {
+    std::cout << "Nothing to redo" << std::endl;
+  }
 }
 
-void undo(Stack& totalStack, Stack& undoStack) {
-  totalStack.pop(); //TODO make this work
+void undo() {
+  if(!totalStack.empty()) {
+    std::string totalAsString = std::to_string(runningTotal);
+    undoStack.push(totalAsString);
+    runningTotal = std::stoi(totalStack.top());
+    totalStack.pop();
+  }
+  else {
+    std::cout << "Nothing to undo" << std::endl;
+  }
 }
