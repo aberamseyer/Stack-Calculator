@@ -13,9 +13,9 @@
 class Stack{
   public:
     Stack ();
-    void push (std::string & x);
+    void push (int & x);
     void pop ();
-    std::string & top ();
+    int & top ();
     // add more functions as needed
   private:
     LinkedList s;

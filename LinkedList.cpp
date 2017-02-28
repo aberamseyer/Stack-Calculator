@@ -105,7 +105,7 @@ int LinkedList::at(int index) const {
  * Adds a value to the end of the linked list
  * Constant time
  */
-void LinkedList::add(std::string toAdd) {
+void LinkedList::add(int toAdd) {
   if(head == NULL) {
     Node* newNode = new Node();
     newNode->data = toAdd;
@@ -128,7 +128,7 @@ void LinkedList::add(std::string toAdd) {
  * Deletes the node at the specified index from the list, returns true if valid index (successful)
  * Constant time for the head and tail, O(n-index) worst case for any index inbetween
  */
-bool LinkedList::remove(std::string index) {
+bool LinkedList::remove(int index) {
   Node* curr = head;
   if(index == 0) {
     curr->next->prev = NULL;  // disconnect next node's prev
