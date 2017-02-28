@@ -11,7 +11,7 @@
 #include <regex>
 
 void interpret(std::string& toCheck);
-void calculate(std::string& toCheck);
+void calculate(int& number);
 void redo();
 void undo();
 
@@ -48,16 +48,16 @@ int main() {
 }
 
 void interpret(std::string& toCheck) {
-  std::string toSend;
+  int number;
   switch (toCheck[0]) {
     case '+':
     case '-':
     case '*':
     case '/':
     case '%':
-      toSend = std::to_string(runningTotal);
-      calculate(toCheck);   // calculates the runningTotal with the new number
-      totalStack.push(toSend);  // push the current runningTotal onto the stack
+      number = std::stoi(toCheck.substr(1));
+      calculate(number);   // calculates the runningTotal with the new number
+      totalStack.push(number);  // push the current runningTotal onto the stack
       undoStack.clear();        // nothing to redo if a calculation goes through
       break;
     case 'R':
@@ -70,8 +70,8 @@ void interpret(std::string& toCheck) {
       break;
     case 'C':
     case 'c':
-      toSend = std::to_string(runningTotal);
-      totalStack.push(toSend);
+      number = std::stoi(toCheck.substr(1));
+      totalStack.push(number);
       runningTotal = 0; // zero
       undoStack.clear();
       break;
@@ -85,8 +85,7 @@ void interpret(std::string& toCheck) {
 
 }
 
-void calculate(std::string& toCheck) {
-  int number = std::stoi(toCheck.substr(1));
+void calculate(int& number) {
   if(toCheck[0] == '+')
     runningTotal += number;
   else if(toCheck[0] == '-')
@@ -101,9 +100,8 @@ void calculate(std::string& toCheck) {
 
 void redo() {
   if(!undoStack.empty()) {
-    std::string totalAsString = std::to_string(runningTotal);
-    totalStack.push(totalAsString);
-    runningTotal = std::stoi(undoStack.top());
+    totalStack.push(runningTotal);
+    runningTotal = undoStack.top();
     undoStack.pop();
   }
   else {
@@ -113,9 +111,8 @@ void redo() {
 
 void undo() {
   if(!totalStack.empty()) {
-    std::string totalAsString = std::to_string(runningTotal);
-    undoStack.push(totalAsString);
-    runningTotal = std::stoi(totalStack.top());
+    undoStack.push(runningTotal);
+    runningTotal = totalStack.top();
     totalStack.pop();
   }
   else {
