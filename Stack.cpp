@@ -43,3 +43,15 @@ void Stack::printStack() {
 	}
 }
 ;
+
+void Stack::clear() {
+	for(int i = s.getSize()-1; i>=0; i--) {
+		s.remove(i);
+	}
+};
+
+bool Stack::empty() {
+	if(s.getSize() == 0)
+		return true;
+	return false;
+}

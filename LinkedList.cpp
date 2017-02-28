@@ -79,7 +79,7 @@ int LinkedList::getSize() const {
  * -1 is returned for an invalid index
  * Worst case O(n/2)
  */
-std::string LinkedList::at(int index) const {
+int LinkedList::at(int index) const {
   if(index < 0 || index >= size) {
     return NULL;
   }
@@ -105,7 +105,7 @@ std::string LinkedList::at(int index) const {
  * Adds a value to the end of the linked list
  * Constant time
  */
-void LinkedList::add(std::string& toAdd) {
+void LinkedList::add(int toAdd) {
   if(head == NULL) {
     Node* newNode = new Node();
     newNode->data = toAdd;

@@ -17,6 +17,8 @@ class Stack{
     void push (int & x);
     void pop ();
     int & top ();
+    void clear();
+    bool empty();
     void printStack();
   private:
     LinkedList s;
