@@ -32,12 +32,15 @@ int main() {
                 "C                       Clears the total\n" <<
                 "U                       Undo\n" <<
                 "R                       Redo\n" <<
-                "Q                       Quit" << std::endl << std::endl << std::endl;
+                "Q                       Quit" << std::endl << std::endl << "total: " << runningTotal << std::endl;
   do {
-    std::cout << "undo stack: ";
-    undoStack.printStack();
-    std::cout << std::endl << "redo stack: ";
-    redoStack.printStack();
+    /*
+     * Debug Code
+     */
+  //   std::cout << "undo stack: ";
+  //   undoStack.printStack();
+  //   std::cout << std::endl << "redo stack: ";
+  //   redoStack.printStack();
     std::cout << std::endl << ">";
     std::cin >> entry;
     if(!(std::regex_match(entry.substr(1), number) || std::regex_match(entry, command))) {  // determine number or command
@@ -48,6 +51,7 @@ int main() {
     std::cout << "total: " << runningTotal << std::endl;
   } while(repeat);
 
+  std::cout << "\nGoodbye" << std::endl;
   return 0;
 }
 
@@ -84,6 +88,7 @@ void interpret(std::string& toCheck) {
 
 void calculate(std::string& toCheck) {
   int number = std::stoi(toCheck.substr(1));
+  undoStack.push(runningTotal);  // push the current runningTotal onto the stack
 
   if(toCheck[0] == '+')
     runningTotal += number;
@@ -96,13 +101,13 @@ void calculate(std::string& toCheck) {
   else if(toCheck[0] == '%')
     runningTotal %= number;
 
-  undoStack.push(runningTotal);  // push the current runningTotal onto the stack
   redoStack.clear();        // nothing to redo if a calculation goes through
 }
 
 void clear() {
   undoStack.push(runningTotal);
   runningTotal = 0; // zero
+  redoStack.clear();
 }
 
 void redo() {
