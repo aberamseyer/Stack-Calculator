@@ -11,7 +11,8 @@
 #include <regex>
 
 void interpret(std::string& toCheck);
-void calculate(int& number);
+void calculate(std::string& toCheck);
+void clear(std::string& toCheck);
 void redo();
 void undo();
 
@@ -19,7 +20,6 @@ Stack undoStack;
 Stack totalStack;
 int runningTotal = 0;
 bool repeat = true;
-std::string ZERO = "0";
 
 int main() {
   std::string entry;
@@ -55,10 +55,7 @@ void interpret(std::string& toCheck) {
     case '*':
     case '/':
     case '%':
-      number = std::stoi(toCheck.substr(1));
-      calculate(number);   // calculates the runningTotal with the new number
-      totalStack.push(number);  // push the current runningTotal onto the stack
-      undoStack.clear();        // nothing to redo if a calculation goes through
+      calculate(toCheck);   // calculates the runningTotal with the new number
       break;
     case 'R':
     case 'r':
@@ -70,10 +67,7 @@ void interpret(std::string& toCheck) {
       break;
     case 'C':
     case 'c':
-      number = std::stoi(toCheck.substr(1));
-      totalStack.push(number);
-      runningTotal = 0; // zero
-      undoStack.clear();
+      clear(toCheck);
       break;
     case 'Q':
     case 'q':
@@ -85,7 +79,9 @@ void interpret(std::string& toCheck) {
 
 }
 
-void calculate(int& number) {
+void calculate(std::string& toCheck) {
+  int number = std::stoi(toCheck);
+
   if(toCheck[0] == '+')
     runningTotal += number;
   else if(toCheck[0] == '-')
@@ -96,6 +92,15 @@ void calculate(int& number) {
     runningTotal /= number;
   else if(toCheck[0] == '%')
     runningTotal %= number;
+
+  totalStack.push(number);  // push the current runningTotal onto the stack
+  undoStack.clear();        // nothing to redo if a calculation goes through
+}
+
+void clear(std::string& toCheck) {
+  int number = std::stoi(toCheck);
+  totalStack.push(number);
+  runningTotal = 0; // zero
 }
 
 void redo() {
@@ -103,6 +108,7 @@ void redo() {
     totalStack.push(runningTotal);
     runningTotal = undoStack.top();
     undoStack.pop();
+    undoStack.clear();
   }
   else {
     std::cout << "Nothing to redo" << std::endl;

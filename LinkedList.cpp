@@ -81,7 +81,7 @@ int LinkedList::getSize() const {
  */
 int LinkedList::at(int index) const {
   if(index < 0 || index >= size) {
-    return NULL;
+    return -1;
   }
 
   Node* curr = NULL;
