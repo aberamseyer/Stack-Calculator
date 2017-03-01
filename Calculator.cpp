@@ -34,10 +34,10 @@ int main() {
                 "R                       Redo\n" <<
                 "Q                       Quit" << std::endl << std::endl << std::endl;
   do {
-    // std::cout << "undo stack: ";
-    // undoStack.printStack();
-    // std::cout << std::endl << "redo stack: ";
-    // redoStack.printStack();
+    std::cout << "undo stack: ";
+    undoStack.printStack();
+    std::cout << std::endl << "redo stack: ";
+    redoStack.printStack();
     std::cout << std::endl << ">";
     std::cin >> entry;
     if(!(std::regex_match(entry.substr(1), number) || std::regex_match(entry, command))) {  // determine number or command
@@ -110,7 +110,6 @@ void redo() {
     undoStack.push(runningTotal);
     runningTotal = redoStack.top();
     redoStack.pop();
-    // redoStack.clear();
   }
   else {
     std::cout << "Nothing to redo" << std::endl;

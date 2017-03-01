@@ -24,7 +24,7 @@ void Stack::push(int x) {
 void Stack::pop() {
 	if (s.getSize() != 0) {
 		int a = s.getSize() - 1;
-		s.remove(s.at(a));
+		s.remove(a);
 	}
 }
 
