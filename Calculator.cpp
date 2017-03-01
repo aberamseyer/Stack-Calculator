@@ -12,12 +12,12 @@
 
 void interpret(std::string& toCheck);
 void calculate(std::string& toCheck);
-void clear(std::string& toCheck);
+void clear();
 void redo();
 void undo();
 
+Stack redoStack;
 Stack undoStack;
-Stack totalStack;
 int runningTotal = 0;
 bool repeat = true;
 
@@ -32,23 +32,26 @@ int main() {
                 "C                       Clears the total\n" <<
                 "U                       Undo\n" <<
                 "R                       Redo\n" <<
-                "Q                       Quit" << std::endl << std::endl << "0" << std::endl;
+                "Q                       Quit" << std::endl << std::endl << std::endl;
   do {
-    std::cout << ">";
+    // std::cout << "undo stack: ";
+    // undoStack.printStack();
+    // std::cout << std::endl << "redo stack: ";
+    // redoStack.printStack();
+    std::cout << std::endl << ">";
     std::cin >> entry;
     if(!(std::regex_match(entry.substr(1), number) || std::regex_match(entry, command))) {  // determine number or command
       std::cout << "Invalid Input" << std::endl;
     } else {
       interpret(entry);
     }
-    std::cout << runningTotal << std::endl;
+    std::cout << "total: " << runningTotal << std::endl;
   } while(repeat);
 
   return 0;
 }
 
 void interpret(std::string& toCheck) {
-  int number;
   switch (toCheck[0]) {
     case '+':
     case '-':
@@ -67,7 +70,7 @@ void interpret(std::string& toCheck) {
       break;
     case 'C':
     case 'c':
-      clear(toCheck);
+      clear();
       break;
     case 'Q':
     case 'q':
@@ -80,7 +83,7 @@ void interpret(std::string& toCheck) {
 }
 
 void calculate(std::string& toCheck) {
-  int number = std::stoi(toCheck);
+  int number = std::stoi(toCheck.substr(1));
 
   if(toCheck[0] == '+')
     runningTotal += number;
@@ -93,22 +96,21 @@ void calculate(std::string& toCheck) {
   else if(toCheck[0] == '%')
     runningTotal %= number;
 
-  totalStack.push(number);  // push the current runningTotal onto the stack
-  undoStack.clear();        // nothing to redo if a calculation goes through
+  undoStack.push(runningTotal);  // push the current runningTotal onto the stack
+  redoStack.clear();        // nothing to redo if a calculation goes through
 }
 
-void clear(std::string& toCheck) {
-  int number = std::stoi(toCheck);
-  totalStack.push(number);
+void clear() {
+  undoStack.push(runningTotal);
   runningTotal = 0; // zero
 }
 
 void redo() {
-  if(!undoStack.empty()) {
-    totalStack.push(runningTotal);
-    runningTotal = undoStack.top();
-    undoStack.pop();
-    undoStack.clear();
+  if(!redoStack.empty()) {
+    undoStack.push(runningTotal);
+    runningTotal = redoStack.top();
+    redoStack.pop();
+    // redoStack.clear();
   }
   else {
     std::cout << "Nothing to redo" << std::endl;
@@ -116,10 +118,10 @@ void redo() {
 }
 
 void undo() {
-  if(!totalStack.empty()) {
-    undoStack.push(runningTotal);
-    runningTotal = totalStack.top();
-    totalStack.pop();
+  if(!undoStack.empty()) {
+    redoStack.push(runningTotal);
+    runningTotal = undoStack.top();
+    undoStack.pop();
   }
   else {
     std::cout << "Nothing to undo" << std::endl;

@@ -7,19 +7,18 @@
  *
  */
 #include "Stack.h"
-#include "LinkedList.h"
 
 
 /* Initialize the stack */
 Stack::Stack() {
 
-};
+}
 
 /* Add value to the stack */
-void Stack::push(int &x) {
+void Stack::push(int x) {
 	s.add(x);
 }
-;
+
 
 /* remove the top value of the stack */
 void Stack::pop() {
@@ -28,27 +27,27 @@ void Stack::pop() {
 		s.remove(s.at(a));
 	}
 }
-;
+
 
 /* Returns the top value of the stack without removing */
-int& Stack::top() {
+int Stack::top() {
 	return s.at(s.getSize() - 1);
 }
-;
+
 
 /* Print stack */
 void Stack::printStack() {
 	for (int i = 0; i < s.getSize(); i++) {
-		std::cout << i << "\n";
+		std::cout << s.at(i) << ", ";
 	}
 }
-;
+
 
 void Stack::clear() {
 	for(int i = s.getSize()-1; i>=0; i--) {
 		s.remove(i);
 	}
-};
+}
 
 bool Stack::empty() {
 	if(s.getSize() == 0)

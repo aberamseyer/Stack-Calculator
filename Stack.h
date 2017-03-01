@@ -14,9 +14,9 @@
 class Stack{
   public:
     Stack ();
-    void push (int & x);
+    void push (int x);
     void pop ();
-    int & top ();
+    int top ();
     void clear();
     bool empty();
     void printStack();
