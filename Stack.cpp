@@ -14,6 +14,11 @@ Stack::Stack() {
 
 }
 
+/* Kill the Stack Xp */
+Stack::~Stack() {
+
+}
+
 /* Add value to the stack */
 void Stack::push(int x) {
 	s.add(x);

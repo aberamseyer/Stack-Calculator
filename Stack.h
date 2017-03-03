@@ -14,6 +14,7 @@
 class Stack{
   public:
     Stack ();
+    ~Stack ();
     void push (int x);
     void pop ();
     int top ();
