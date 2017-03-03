@@ -16,15 +16,15 @@ void clear();
 void redo();
 void undo();
 
-Stack redoStack;
-Stack undoStack;
-int runningTotal = 0;
-bool repeat = true;
+Stack redoStack;    // holds all the values that can be "re-done"
+Stack undoStack;    // holds all the values that can be "un-done"
+int runningTotal = 0; // the total displayed to the user after every iteration
+bool repeat = true;   // whether the program should loop again or quit
 
 int main() {
   std::string entry;
-  std::regex number("[[:digit:]]+");
-  std::regex command("[QURCqurc]");
+  std::regex number("[[:digit:]]+");    // matches any number
+  std::regex command("[QURCqurc]");     // matches the set of commands available
 
   std::cout << "Welcome to this stack-based integer calculator. It works on a running total.\n\n" <<
                 "Usage                   Function\n" <<
@@ -34,13 +34,6 @@ int main() {
                 "R                       Redo\n" <<
                 "Q                       Quit" << std::endl << std::endl << "total: " << runningTotal << std::endl;
   do {
-    /*
-     * Debug Code
-     */
-  //   std::cout << "undo stack: ";
-  //   undoStack.printStack();
-  //   std::cout << std::endl << "redo stack: ";
-  //   redoStack.printStack();
     std::cout << std::endl << ">";
     std::cin >> entry;
     if(!(std::regex_match(entry.substr(1), number) || std::regex_match(entry, command))) {  // determine whether a valid entry
@@ -55,8 +48,11 @@ int main() {
   return 0;
 }
 
+/*
+ * takes the string the user entered
+ */
 void interpret(std::string& toCheck) {
-  // further check to ensure the symbol entered is correct
+  // further check to ensure the symbol entered is correct (wasn't working via regex)
   switch (toCheck[0]) {
     case '+':
     case '-':
@@ -87,6 +83,9 @@ void interpret(std::string& toCheck) {
 
 }
 
+/*
+ * takes the string the user entered
+ */
 void calculate(std::string& toCheck) {
   int number = std::stoi(toCheck.substr(1));
   undoStack.push(runningTotal);  // push the current runningTotal onto the stack
@@ -106,12 +105,19 @@ void calculate(std::string& toCheck) {
   redoStack.clear();        // nothing to redo if a calculation goes through
 }
 
+/*
+ * when clear is entered, 0 should become the new runningTotal with the previous value
+ * going onto the undo stack
+ */
 void clear() {
   undoStack.push(runningTotal);
-  runningTotal = 0; // when clear is entered, 0 should become the new runningTotal with the previous value going onto the undo stack
+  runningTotal = 0;
   redoStack.clear();
 }
-// to redo, put the runningTotal onto the undoStack, set runningTotal to the top of the redoStack, pop off that value
+/*
+ * to redo, put the runningTotal onto the undoStack, set runningTotal
+ * to the top of the redoStack, pop off that value
+ */
 void redo() {
   if(!redoStack.empty()) {
     undoStack.push(runningTotal);
@@ -123,7 +129,9 @@ void redo() {
   }
 }
 
-// this should be the exact opposite of the redo() function with the stacks switched
+/*
+ * this should be the exact opposite of the redo() function with the stacks switched
+ */
 void undo() {
   if(!undoStack.empty()) {
     redoStack.push(runningTotal);
