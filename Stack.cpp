@@ -14,7 +14,7 @@ Stack::Stack() {
 
 }
 
-/* Kill the Stack Xp */
+/* Kill the Stack */
 Stack::~Stack() {
 
 }
@@ -47,13 +47,14 @@ void Stack::printStack() {
 	}
 }
 
-
+/* remove everything in the stack */
 void Stack::clear() {
 	for(int i = s.getSize()-1; i>=0; i--) {
 		s.remove(i);
 	}
 }
 
+/* test if the stack is empty */
 bool Stack::empty() {
 	if(s.getSize() == 0)
 		return true;

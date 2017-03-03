@@ -43,10 +43,10 @@ int main() {
   //   redoStack.printStack();
     std::cout << std::endl << ">";
     std::cin >> entry;
-    if(!(std::regex_match(entry.substr(1), number) || std::regex_match(entry, command))) {  // determine number or command
+    if(!(std::regex_match(entry.substr(1), number) || std::regex_match(entry, command))) {  // determine whether a valid entry
       std::cout << "Invalid Input" << std::endl;
     } else {
-      interpret(entry);
+      interpret(entry);     // interpret command/number entered
     }
     std::cout << "total: " << runningTotal << std::endl;
   } while(repeat);
@@ -56,6 +56,7 @@ int main() {
 }
 
 void interpret(std::string& toCheck) {
+  // further check to ensure the symbol entered is correct
   switch (toCheck[0]) {
     case '+':
     case '-':
@@ -81,7 +82,7 @@ void interpret(std::string& toCheck) {
       repeat = false;
       break;
     default:
-      std::cout << "Invalid Input" << std::endl;
+      std::cout << "Invalid Input" << std::endl;    // if the beginning symbol doesn't match, the input was invalid
   }
 
 }
@@ -90,6 +91,7 @@ void calculate(std::string& toCheck) {
   int number = std::stoi(toCheck.substr(1));
   undoStack.push(runningTotal);  // push the current runningTotal onto the stack
 
+  // adjust runningTotal accordingly
   if(toCheck[0] == '+')
     runningTotal += number;
   else if(toCheck[0] == '-')
@@ -106,21 +108,22 @@ void calculate(std::string& toCheck) {
 
 void clear() {
   undoStack.push(runningTotal);
-  runningTotal = 0; // zero
+  runningTotal = 0; // when clear is entered, 0 should become the new runningTotal with the previous value going onto the undo stack
   redoStack.clear();
 }
-
+// to redo, put the runningTotal onto the undoStack, set runningTotal to the top of the redoStack, pop off that value
 void redo() {
   if(!redoStack.empty()) {
     undoStack.push(runningTotal);
     runningTotal = redoStack.top();
     redoStack.pop();
   }
-  else {
+  else {  // if the stacks are empty, nothing to redo
     std::cout << "Nothing to redo" << std::endl;
   }
 }
 
+// this should be the exact opposite of the redo() function with the stacks switched
 void undo() {
   if(!undoStack.empty()) {
     redoStack.push(runningTotal);

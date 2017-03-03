@@ -1,5 +1,6 @@
 /*
  * LinkedList.h
+ * See LinkedList.cpp for method comments on the specific implemenation
  *
  * @Abe Ramseyer
  * 2-14-2017

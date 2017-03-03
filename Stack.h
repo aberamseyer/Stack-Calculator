@@ -1,6 +1,6 @@
 
 /*
-* Header file for the Stack implementation
+* Header file for the Stack implementation, see implemenation for comments on methods
 *
 * @author Griffin
 *
