@@ -23,8 +23,8 @@ bool repeat = true;   // whether the program should loop again or quit
 
 int main() {
   std::string entry;
-  std::regex number("[[:digit:]]+");    // matches any number
-  std::regex command("[QURCqurc]");     // matches the set of commands available
+  std::regex number("[0-999]+", std::regex_constants::basic);    // matches any number
+  std::regex command("[QURCqurc]", std::regex_constants::basic);     // matches the set of commands available
 
   std::cout << "Welcome to this stack-based integer calculator. It works on a running total.\n\n" <<
                 "Usage                   Function\n" <<
@@ -36,8 +36,9 @@ int main() {
   do {
     std::cout << std::endl << ">";
     std::cin >> entry;
-    if(!(std::regex_match(entry.substr(1), number) || std::regex_match(entry, command))) {  // determine whether a valid entry
-      std::cout << "Invalid Input" << std::endl;
+    std::locale loc;
+    if(!(isdigit(entry[1], loc)|| std::regex_match(entry, command))) {  // determine whether a valid entry
+      std::cout << "Invalid Input!" << std::endl;
     } else {
       interpret(entry);     // interpret command/number entered
     }

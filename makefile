@@ -4,7 +4,7 @@
 #
 
 CC = g++
-FLAGS = -std=c++11
+FLAGS = -std=c++11 -std=c++0x
 
 all:main
 
