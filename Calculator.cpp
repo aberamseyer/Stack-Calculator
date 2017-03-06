@@ -15,6 +15,7 @@ void calculate(std::string& toCheck);
 void clear();
 void redo();
 void undo();
+bool isNumber(const std::string& entry);
 
 Stack redoStack;    // holds all the values that can be "re-done"
 Stack undoStack;    // holds all the values that can be "un-done"
@@ -23,7 +24,6 @@ bool repeat = true;   // whether the program should loop again or quit
 
 int main() {
   std::string entry;
-  std::regex number("[0-999]+", std::regex_constants::basic);    // matches any number
   std::regex command("[QURCqurc]", std::regex_constants::basic);     // matches the set of commands available
 
   std::cout << "Welcome to this stack-based integer calculator. It works on a running total.\n\n" <<
@@ -36,8 +36,8 @@ int main() {
   do {
     std::cout << std::endl << ">";
     std::cin >> entry;
-    std::locale loc;
-    if(!(isdigit(entry[1], loc)|| std::regex_match(entry, command))) {  // determine whether a valid entry
+   // std::locale loc;
+    if(!(isNumber(entry.substr(1)) || std::regex_match(entry, command))) {  // determine whether a valid entry
       std::cout << "Invalid Input!" << std::endl;
     } else {
       interpret(entry);     // interpret command/number entered
@@ -79,7 +79,7 @@ void interpret(std::string& toCheck) {
       repeat = false;
       break;
     default:
-      std::cout << "Invalid Input" << std::endl;    // if the beginning symbol doesn't match, the input was invalid
+      std::cout << "Invalid Input!" << std::endl;    // if the beginning symbol doesn't match, the input was invalid
   }
 
 }
@@ -142,4 +142,14 @@ void undo() {
   else {
     std::cout << "Nothing to undo" << std::endl;
   }
+}
+
+/*
+ * checks if a given string is a number (because our regex only worked on our machines and not the school's linux machines)
+ */
+bool isNumber(const std::string& entry)
+{
+    std::string::const_iterator it = entry.begin();
+    while (it != entry.end() && std::isdigit(*it)) ++it;
+    return !entry.empty() && it == entry.end();
 }
